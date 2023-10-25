@@ -121,13 +121,18 @@ public class PlayerController : MonoBehaviour
             else
             {
                 lives -= 1;
-                
-                if(lives == 0)
+
+                if (lives == 0)
                 {
                     Debug.Log("You lost");
                 }
+                else
+                {
+					Debug.Log("You died");
+					transform.position = startPosition;
+				}
 
-                transform.position = startPosition;
+                
 
             }
         }
@@ -145,6 +150,24 @@ public class PlayerController : MonoBehaviour
             Debug.Log("You have collected an extra life");
             other.gameObject.SetActive(false);
         }
+
+        if (other.CompareTag("FallLevel"))
+        {
+			lives -= 1;
+
+			if (lives == 0)
+			{
+				Debug.Log("You lost");
+            }
+            else
+            {
+                Debug.Log("You died");
+				transform.position = startPosition;
+			}
+
+			
+
+		}
         
     }
 }

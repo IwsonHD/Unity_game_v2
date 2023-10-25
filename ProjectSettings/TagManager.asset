@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Key
   - BonusLife
+  - FallLevel
   layers:
   - Default
   - TransparentFX
