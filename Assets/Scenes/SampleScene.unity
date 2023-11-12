@@ -6407,7 +6407,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -17006,8 +17006,8 @@ Transform:
   m_GameObject: {fileID: 1909726986}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20, y: 2, z: 0}
-  m_LocalScale: {x: 4, y: 3, z: 1}
+  m_LocalPosition: {x: 14.3, y: 2.7, z: 0}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -17637,6 +17637,7 @@ MonoBehaviour:
   scoreText: {fileID: 2001630924}
   currentTime: {fileID: 1871256859}
   enemiesKilledText: {fileID: 211739479}
+  keysFound: 0
   keysTab:
   - {fileID: 1929549051}
   - {fileID: 601732465}

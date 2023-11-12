@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     private float timer = 0.0f;
 
-    private int keysFound = 0;
+    public int keysFound = 0;
 
     private int enemiesKilled = 0;
 

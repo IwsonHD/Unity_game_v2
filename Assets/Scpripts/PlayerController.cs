@@ -16,8 +16,7 @@ public class PlayerController : MonoBehaviour
     [Space(10)]
     private float jumpForce = 6.0f;
 
-    private int lives = 3;
-    private int keysFound = 0;
+
     private const int keysOnMap = 3;
 
 
@@ -111,7 +110,7 @@ public class PlayerController : MonoBehaviour
         
         if(other.CompareTag("Finish"))
 		{
-            if (keysFound == keysOnMap)
+            if (GameManager.instance.keysFound == keysOnMap)
                 Debug.Log("You have collected all keys and finished the game");
 
             else 
