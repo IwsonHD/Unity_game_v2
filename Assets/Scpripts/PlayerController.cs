@@ -16,6 +16,12 @@ public class PlayerController : MonoBehaviour
     [Space(10)]
     private float jumpForce = 6.0f;
 
+    [SerializeField]
+    private AudioClip bSound;
+    [SerializeField]
+    private AudioClip aSound;
+
+    private AudioSource source;
 
     private const int keysOnMap = 3;
 
@@ -82,6 +88,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        source = GetComponent<AudioSource>();
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
@@ -102,7 +109,7 @@ public class PlayerController : MonoBehaviour
         if(other.CompareTag("Bonus"))
         {
             other.CompareTag("Bonus");
-            
+            source.PlayOneShot(bSound, AudioListener.volume);
             //Debug.Log("Score: " + score);
             other.gameObject.SetActive(false);
 			GameManager.instance.AddPoints(10);
@@ -111,9 +118,12 @@ public class PlayerController : MonoBehaviour
         if(other.CompareTag("Finish"))
 		{
             if (GameManager.instance.keysFound == keysOnMap)
+            {
                 Debug.Log("You have collected all keys and finished the game");
-
-            else 
+                GameManager.instance.AddPoints(100 * GameManager.instance.lifes);
+                GameManager.instance.LevelCompleted();
+            }
+            else
                 Debug.Log("Collect all keys in order to finish this lvl");
         }
 
@@ -122,6 +132,7 @@ public class PlayerController : MonoBehaviour
             if(transform.position.y > other.transform.position.y)
             {
                 //score += 10;
+                source.PlayOneShot(aSound, AudioListener.volume);
                 GameManager.instance.IncreaseEnemiesKilledCounter();
                 GameManager.instance.AddPoints(10);
                 Debug.Log("Killed an enemy");
@@ -162,6 +173,12 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("MovingPlatform"))
         {
             transform.SetParent(other.transform);
+        }
+
+        if (other.CompareTag("switch"))
+        {
+            //Debug.Log("xd");
+            FindObjectOfType<GeneratedPlatforms>().TurnOnOff();
         }
          
     }
