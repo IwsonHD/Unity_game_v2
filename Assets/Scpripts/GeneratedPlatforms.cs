@@ -13,15 +13,17 @@ public class GeneratedPlatforms : MonoBehaviour
     [SerializeField]
     private bool isOn = false;
 
+    [SerializeField]
+    private Sprite[] spriteArr;
 
-    private const int PLATFORMS_NUM = 8;
+    private const int PLATFORMS_NUM = 4;
     private const int PLTFORM_RADIUS = 5;
 
 
     private GameObject[] platforms;
     private Vector3[] positions;
     private float[] arcPositions;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -64,9 +66,21 @@ public class GeneratedPlatforms : MonoBehaviour
 
 	}
 
-    public void TurnOnOff()
+    public void TurnOnOff(Collider2D other)
     {
         isOn ^= true;
-    }
+
+        other.GetComponent<SpriteRenderer>().sprite = spriteArr[isOn ? 1 : 0];
+
+	}
+
+    //private void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        TurnOnOff();
+    //    }
+    //}
+
 
 }

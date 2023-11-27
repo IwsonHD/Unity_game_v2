@@ -177,10 +177,10 @@ public class PlayerController : MonoBehaviour
 
         if (other.CompareTag("switch"))
         {
-            //Debug.Log("xd");
-            FindObjectOfType<GeneratedPlatforms>().TurnOnOff();
+
+            FindObjectOfType<GeneratedPlatforms>().TurnOnOff(other);
         }
-         
+
     }
 
 	private void OnTriggerExit2D(Collider2D other)
