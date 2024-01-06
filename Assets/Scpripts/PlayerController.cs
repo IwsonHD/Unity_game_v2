@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,9 +16,13 @@ public class PlayerController : MonoBehaviour
     [Space(10)]
     private float jumpForce = 6.0f;
 
-    private int score = 0;
-    private int lives = 3;
-    private int keysFound = 0;
+    [SerializeField]
+    private AudioClip bSound;
+    [SerializeField]
+    private AudioClip aSound;
+
+    private AudioSource source;
+
     private const int keysOnMap = 3;
 
 
@@ -46,28 +51,35 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        isWalking = false;
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) {
-            if (isFacingRight == false)
-                Flip();
-            transform.Translate(moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
-            isWalking = true;
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) {
-            if (isFacingRight == true)
-                Flip();
-            transform.Translate(-moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
-            isWalking = true;
-        }
 
-        if (isGrounded() && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))) {
+        if (GameManager.instance.currentGameState == GameManager.GameState.GS_GAME)
+        {
+
             isWalking = false;
-            Jump();
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+            {
+                if (isFacingRight == false)
+                    Flip();
+                transform.Translate(moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
+                isWalking = true;
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+            {
+                if (isFacingRight == true)
+                    Flip();
+                transform.Translate(-moveSpeed * Time.deltaTime, 0.0f, 0.0f, Space.World);
+                isWalking = true;
+            }
+
+            if (isGrounded() && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)))
+            {
+                isWalking = false;
+                Jump();
+            }
+
+            animator.SetBool("isGrounded", isGrounded());
+            animator.SetBool("isWalking", isWalking);
         }
-
-        animator.SetBool("isGrounded", isGrounded());
-        animator.SetBool("isWalking", isWalking);
-
     }
 
     //Boy, the sound that whip makes sure is sweet. It's like Jesus gently snapping his fingers
@@ -76,6 +88,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        source = GetComponent<AudioSource>();
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
@@ -96,17 +109,21 @@ public class PlayerController : MonoBehaviour
         if(other.CompareTag("Bonus"))
         {
             other.CompareTag("Bonus");
-            score += 10;
-            Debug.Log("Score: " + score);
+            source.PlayOneShot(bSound, AudioListener.volume);
+            //Debug.Log("Score: " + score);
             other.gameObject.SetActive(false);
-        }
+			GameManager.instance.AddPoints(10);
+		}
         
         if(other.CompareTag("Finish"))
 		{
-            if (keysFound == keysOnMap)
-                Debug.Log("You have collected all keys and finished the game with a score of " + score);
-
-            else 
+            if (GameManager.instance.keysFound == keysOnMap)
+            {
+                Debug.Log("You have collected all keys and finished the game");
+                GameManager.instance.AddPoints(100 * GameManager.instance.lifes);
+                GameManager.instance.LevelCompleted();
+            }
+            else
                 Debug.Log("Collect all keys in order to finish this lvl");
         }
 
@@ -114,37 +131,63 @@ public class PlayerController : MonoBehaviour
         {
             if(transform.position.y > other.transform.position.y)
             {
-                score += 10;
+                //score += 10;
+                source.PlayOneShot(aSound, AudioListener.volume);
+                GameManager.instance.IncreaseEnemiesKilledCounter();
+                GameManager.instance.AddPoints(10);
                 Debug.Log("Killed an enemy");
                 Jump();
             }
             else
             {
-                lives -= 1;
-                
-                if(lives == 0)
-                {
-                    Debug.Log("You lost");
-                }
+                GameManager.instance.TakeHearth();
 
-                transform.position = startPosition;
-
-            }
+				transform.position = startPosition;
+			}
         }
 
         if (other.CompareTag("Key"))
         {
-            keysFound += 1;
-            Debug.Log($"You have found {keysFound}");
+            GameManager.instance.AddKeys(other.gameObject);
+            //Debug.Log($"You have found {keysFound}");
             other.gameObject.SetActive(false);
         }
 
         if (other.CompareTag("BonusLife"))
         {
-            lives += 1;
-            Debug.Log("You have collected an extra life");
+            GameManager.instance.AddHearth();
             other.gameObject.SetActive(false);
         }
-        
+
+        if (other.CompareTag("FallLevel"))
+        {
+
+            GameManager.instance.TakeHearth();
+
+		    transform.position = startPosition;
+
+
+
+		}
+
+        if (other.CompareTag("MovingPlatform"))
+        {
+            transform.SetParent(other.transform);
+        }
+
+        if (other.CompareTag("switch"))
+        {
+
+            FindObjectOfType<GeneratedPlatforms>().TurnOnOff(other);
+        }
+
     }
+
+	private void OnTriggerExit2D(Collider2D other)
+	{
+		transform.SetParent(null);
+	}
+
+
+
 }

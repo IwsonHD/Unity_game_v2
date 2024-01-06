@@ -9,6 +9,9 @@ TagManager:
   - Enemy
   - Key
   - BonusLife
+  - FallLevel
+  - MovingPlatform
+  - switch
   layers:
   - Default
   - TransparentFX
