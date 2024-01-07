@@ -29,9 +29,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 startPosition;
 
     //private BigInteger scoreBig;
-    private bool isLadder = false;
-    private bool isClimbing = false;
-    private float vertical;
 
     private bool isWalking = false;
 
@@ -57,11 +54,8 @@ public class PlayerController : MonoBehaviour
 
         if (GameManager.instance.currentGameState == GameManager.GameState.GS_GAME)
         {
-            vertical = Input.GetAxis("Vertical");
+
             isWalking = false;
-            if (isLadder && System.Math.Abs(vertical) > 0) isClimbing = true;
-
-
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
             {
                 if (isFacingRight == false)
@@ -88,19 +82,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-	private void FixedUpdate()
-	{
-        if (isClimbing)
-        {
-            GetComponent<Rigidbody2D>().gravityScale = 0;
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, vertical * moveSpeed);
-        }
-        else GetComponent<Rigidbody2D>().gravityScale = 1;
-	}
+    //Boy, the sound that whip makes sure is sweet. It's like Jesus gently snapping his fingers
 
-	//Boy, the sound that whip makes sure is sweet. It's like Jesus gently snapping his fingers
-
-	private void Jump() => rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    private void Jump() => rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
     private void Awake()
     {
@@ -196,21 +180,12 @@ public class PlayerController : MonoBehaviour
 
             FindObjectOfType<GeneratedPlatforms>().TurnOnOff(other);
         }
-        if (other.CompareTag("Ladder"))
-        {
-            isLadder= true;
-        }
 
     }
 
 	private void OnTriggerExit2D(Collider2D other)
 	{
-        if(other.CompareTag("MovingPlatform")) transform.SetParent(null);
-        if (other.CompareTag("Ladder"))
-        {
-            isLadder= false;
-            isClimbing= false;  
-        }
+		transform.SetParent(null);
 	}
 
 

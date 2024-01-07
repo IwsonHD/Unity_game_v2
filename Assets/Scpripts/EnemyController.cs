@@ -25,7 +25,6 @@ public class EnemyController : MonoBehaviour
 
 	private bool isMovingRight = false;
 
-	private bool isFacingRight = false;
 	//private bool isFacingRight = false;
 
 
@@ -74,7 +73,6 @@ public class EnemyController : MonoBehaviour
 
 	private void Flip()
 	{
-		isFacingRight ^= true;
 		//isFacingRight ^= true;
 		theScale = transform.localScale;
 		theScale.x *= -1;
@@ -106,8 +104,6 @@ public class EnemyController : MonoBehaviour
 			if(other.transform.position.y > transform.position.y)
 			{
 				animator.SetBool("isDead", true);
-				StartCoroutine(KillOnAnimationEnd());
-				
 				GetComponent<BoxCollider2D>().enabled = false;
 				StartCoroutine(KillOnAnimationEnd());
 				

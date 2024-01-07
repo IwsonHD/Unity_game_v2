@@ -12,7 +12,6 @@ TagManager:
   - FallLevel
   - MovingPlatform
   - switch
-  - Ladder
   layers:
   - Default
   - TransparentFX
@@ -21,7 +20,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - Ladder
+  - 
   - 
   - 
   - 
