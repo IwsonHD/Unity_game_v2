@@ -12,6 +12,12 @@ public class MainMenu : MonoBehaviour
 
     }
 
+    public void OnLevel2ButtonPressed()
+    {
+        SceneManager.LoadScene("Level2");
+
+    }
+
     public void OnExitToDesktopButtonPressed()
     {
         #if UNITY_EDITOR
