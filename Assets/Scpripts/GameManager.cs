@@ -58,18 +58,24 @@ public class GameManager : MonoBehaviour
 
 
 
-	private void Awake()
+    private void Awake()
     {
         instance = this;
         this.currentGameState = GameState.GS_GAME;
         this.scoreText.text = score.ToString();
         currentTime.text = string.Format("{0:00}:{1:00}", Math.Floor(timer / 60f), timer % 60f);
         this.enemiesKilledText.text = enemiesKilled.ToString();
-		currQualityLevel.text = QualitySettings.names[QualitySettings.GetQualityLevel()];
-		if (!PlayerPrefs.HasKey("keyHighScore"))
+        currQualityLevel.text = QualitySettings.names[QualitySettings.GetQualityLevel()];
+        if (!PlayerPrefs.HasKey("keyHighScore"))
         {
             PlayerPrefs.SetInt("keyHighScore", 0);
         }
+
+        if (!PlayerPrefs.HasKey("keyHighScore2"))
+        {
+            PlayerPrefs.SetInt("keyHighScore2", 0);
+        }
+
         InGame();
 
 
@@ -107,7 +113,7 @@ public class GameManager : MonoBehaviour
 
 
 
-        currentTime.text = string.Format("{0:00}: {1:00}", Math.Floor(timer / 60f), timer % 60f);
+        currentTime.text = string.Format("{0:00}:{1:00}", Math.Floor(timer / 60f), timer % 60f);
 
         if (currentGameState == GameState.GS_GAME) timer += Time.deltaTime;
 
@@ -183,17 +189,31 @@ public class GameManager : MonoBehaviour
 			var currentScene = SceneManager.GetActiveScene();
 			if (currentScene.name == "Level1")
 			{
-				var highScore = PlayerPrefs.GetInt("keyHighScore");
+			    var highScore = PlayerPrefs.GetInt("keyHighScore");
 				if (highScore < score)
 				{
 					PlayerPrefs.SetInt("keyHighScore", score);
 					highScore = score;
 				}
 
-				scoreTxt.text = score.ToString();
-				highScoreTxt.text = highScore.ToString();
+				scoreTxt.text = "Your score = " + score.ToString();
+				highScoreTxt.text = "You highscore = " + highScore.ToString();
 
 			}
+
+            if(currentScene.name == "Level2")
+            {
+				var highScore = PlayerPrefs.GetInt("keyHighScore2");
+				if (highScore < score)
+				{
+					PlayerPrefs.SetInt("keyHighScore2", score);
+					highScore = score;
+				}
+
+				scoreTxt.text = "Your score = " + score.ToString();
+				highScoreTxt.text = "Your highscore = " + highScore.ToString();
+			}
+
 
 		}
 
@@ -256,6 +276,10 @@ public class GameManager : MonoBehaviour
         {
             heartsTab[lifes].color = Color.red;
             lifes++;
+        }
+        else
+        {
+            AddPoints(30);
         }
     }
 
