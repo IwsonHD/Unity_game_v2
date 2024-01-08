@@ -24,10 +24,7 @@ public class PlatformFall : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D col) {
         if (col.CompareTag("Player")) {
             StartCoroutine(ShakePlatform());
-            Task.Run(async () => {
-                await Task.Delay(TimeSpan.FromSeconds(2));
-                Destroy(gameObject, 2.0f);
-            });
+            Destroy(gameObject, 2.0f);
         }
     }
 
