@@ -167,6 +167,12 @@ public class PlayerController : MonoBehaviour {
         if (other.CompareTag("Ladder")) {
             isLadder = true;
         }
+
+        if (other.CompareTag("Checkpoint"))
+        {
+            startPosition = other.transform.position;
+            GameManager.instance.turnOnCheckpoint(other); 
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other) {

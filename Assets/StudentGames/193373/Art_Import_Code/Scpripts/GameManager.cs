@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour {
     public TMP_Text highScoreTxt;
     public TMP_Text currQualityLevel;
 
+    public Collider2D lastCheckpoint;
+
     private int score = 0;
 
     private float timer = 0.0f;
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour {
 
 
     private void Awake() {
+        lastCheckpoint = null;
         instance = this;
         this.currentGameState = GameState.GS_GAME;
         this.scoreText.text = score.ToString();
@@ -189,6 +192,16 @@ public class GameManager : MonoBehaviour {
 
         currentGameState = newGameState;
     }
+
+    public void turnOnCheckpoint(Collider2D other) {
+        other.GetComponent<SpriteRenderer>().color = Color.red;
+        if (lastCheckpoint != null && lastCheckpoint != other) 
+        {
+            lastCheckpoint.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        lastCheckpoint = other;
+    }
+
 
     public void PauseMenu() {
         SetGameState(GameState.GS_PAUSEMENU);
