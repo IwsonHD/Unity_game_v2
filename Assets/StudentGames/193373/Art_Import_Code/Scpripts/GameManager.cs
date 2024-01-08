@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
-using UnityEditor.Build;
-using UnityEditor.ShaderGraph;
+//using UnityEditor.Build;
+//using UnityEditor.ShaderGraph;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
