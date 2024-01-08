@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour
     {
         #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        #endif
         Application.Quit();
 
     }

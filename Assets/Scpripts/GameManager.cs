@@ -76,6 +76,11 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("keyHighScore2", 0);
         }
 
+        //if (!PlayerPrefs.HasKey("lvl1Completed"))
+        //{
+        //    PlayerPrefs.SetInt("keyCompleted", 0);
+        //}
+
         InGame();
 
 
@@ -198,6 +203,8 @@ public class GameManager : MonoBehaviour
 
 				scoreTxt.text = "Your score = " + score.ToString();
 				highScoreTxt.text = "You highscore = " + highScore.ToString();
+
+                
 
 			}
 
