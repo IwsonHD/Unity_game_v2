@@ -13,6 +13,7 @@ TagManager:
   - MovingPlatform
   - switch
   - Ladder
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
