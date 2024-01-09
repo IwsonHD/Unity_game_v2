@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour {
 
     public Canvas optionCanvas;
 
+    public Canvas gameOverCanvas;
+
     public static GameManager instance;
 
     public Canvas inGameCanvas;
@@ -159,9 +161,10 @@ public class GameManager : MonoBehaviour {
         pauseMenuCanvas.enabled = newGameState == GameState.GS_PAUSEMENU;
         levelCompletedCanvas.enabled = newGameState == GameState.GS_LEVELCOMPLETED;
         optionCanvas.enabled = newGameState == GameState.GS_OPTIONS;
+        gameOverCanvas.enabled = newGameState == GameState.GS_GAME_OVER;
 
 
-        if (newGameState == GameState.GS_LEVELCOMPLETED) {
+		if (newGameState == GameState.GS_LEVELCOMPLETED) {
             //pauseMenuCanvas.enabled = false;
             //inGameCanvas.enabled = false;
             //levelCompletedCanvas.enabled = true;
@@ -260,9 +263,13 @@ public class GameManager : MonoBehaviour {
     }
 
     public void TakeHearth() {
-        if (lifes > 0) {
+        if (lifes > 1) {
             heartsTab[lifes - 1].color = Color.gray;
             lifes--;
+        }
+        else
+        {
+            GameOver();
         }
     }
 
