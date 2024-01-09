@@ -50,8 +50,8 @@ public class GeneratedPlatforms : MonoBehaviour {
     }
 
     public void TurnOnOff(Collider2D other) {
-        isOn ^= true;
-
+        //isOn ^= true;
+        isOn = true;
         other.GetComponent<SpriteRenderer>().sprite = spriteArr[isOn ? 1 : 0];
     }
 }
